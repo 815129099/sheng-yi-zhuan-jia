@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { IonSlides } from '@ionic/angular';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { AuthenticationCodeService } from '../authentication-code.service';
+import { PassportService } from '../passport.service';
 import {Signup} from './signup';
 
 @Component({
@@ -22,15 +23,18 @@ export class SignupPage implements OnInit {
     confirmPassword: '',
     code: ''
   };
-  phoneSubmited=false;
-  codeSubmited=false;
+  phoneSubmited=true;
+  codeSubmited=true;
+  userSubmited=true;
   //按钮切换
   showButtonText = "发送验证码";
   countDowmTime = 60;
   countDown= false;
 
+  //显示验证码错误
+  showError = true;
   slideIndex = 0;
-  constructor(private authenticationCodeService:AuthenticationCodeService,private localStorageService:LocalStorageService) { }
+  constructor(private authenticationCodeService:AuthenticationCodeService,private localStorageService:LocalStorageService,private passportService:PassportService) { }
 
   ngOnInit() {
   //  this.signupSlides.lockSwipeToNext(true);
@@ -49,25 +53,54 @@ onSlideWillChange(event){
    })
 }
 
+/**
+ * 
+ * @param form 表单
+ */
 onSubmitPhone(form:NgForm){
-  this.phoneSubmited = false;
+  this.phoneSubmited = true;
   if (form.valid) {
     // 已通过客户端验证
-    this.phoneSubmited = true;
+    this.phoneSubmited = false;
     this.onNext();
     console.log("手机号验证成功");
   }
+  
 }
 
+/**
+ * 
+ * @param form 表单
+ */
 onSubmitCode(form:NgForm){
-  this.codeSubmited = false;
+  this.codeSubmited = true;
   //验证码验证
   let result = this.onValidateCode(this.signup.code);
   console.log(result);
   if(result==true){
+    this.showError = true;
     this.onNext();
-    this.codeSubmited = true;
+    this.codeSubmited = false;
     console.log("验证码验证成功");
+  }else{
+    this.showError = false;
+    this.codeSubmited = true;
+  }
+}
+
+/**
+ * 
+ * @param form 表单
+ */
+onSubmitUser(form:NgForm){
+  this.userSubmited = true;
+  if (this.signup.password !== this.signup.confirmPassword) {
+    this.showError = false;
+    this.userSubmited = true;
+  }else{
+    this.userSubmited = false;
+    this.showError = true;
+    this.onNext();
   }
 }
 
@@ -98,8 +131,21 @@ onSendSMS(){
   },1000)
 }
 
+/**
+ * 
+ * @param code 验证码
+ */
 onValidateCode(code:string):boolean{
     return this.authenticationCodeService.validate(code);
+}
+
+onRegister(){
+  console.log(this.signup);
+  if(this.passportService.addUser(this.signup)){
+    this.onNext();
+  }else{
+    alert("注册失败");
+  }
 }
 }
 
