@@ -5,6 +5,8 @@ import { IonicModule } from '@ionic/angular';
 import { PassportPageRoutingModule } from './passport-routing.module';
 import { SignupPage } from './signup/signup.page';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { LoginPage } from './login/login.page';
+import { ForgotPasswordPage } from './forgot-password/forgot-password.page';
 
 
 
@@ -16,6 +18,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
     SharedModule,
     PassportPageRoutingModule
   ],
-  declarations: [SignupPage]
+  declarations: [SignupPage,LoginPage,ForgotPasswordPage]
 })
 export class PassportPageModule {}

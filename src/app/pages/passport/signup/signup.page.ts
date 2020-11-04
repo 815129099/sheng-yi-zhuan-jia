@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { IonSlides } from '@ionic/angular';
+import { AjaxResult } from 'src/app/shared/classes/ajax-result';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { AuthenticationCodeService } from '../authentication-code.service';
 import { PassportService } from '../passport.service';
@@ -23,7 +24,6 @@ export class SignupPage implements OnInit {
     confirmPassword: '',
     code: ''
   };
-  phoneSubmited = true;
   //按钮切换
   showButtonText = "发送验证码";
   countDowmTime = 60;
@@ -55,14 +55,11 @@ export class SignupPage implements OnInit {
    * @param form 表单
    */
   onSubmitPhone(form: NgForm) {
-    this.phoneSubmited = true;
     if (form.valid) {
       // 已通过客户端验证
-      this.phoneSubmited = false;
       this.onNext();
       console.log("手机号验证成功");
     }
-
   }
 
   /**
@@ -128,12 +125,12 @@ export class SignupPage implements OnInit {
     return this.authenticationCodeService.validate(code);
   }
 
-  onRegister() {
-    console.log(this.signup);
-    if (this.passportService.addUser(this.signup)) {
+  async onRegister() {
+    let ajaxResult = await this.passportService.addUser(this.signup);
+    if (ajaxResult.success) {
       this.onNext();
     } else {
-      alert("注册失败");
+      alert(ajaxResult.error.message);
     }
   }
 }
