@@ -19,6 +19,7 @@ export class PassportService {
     let accounts = this.localStorageService.get("TLoginAccount", []);
     for (let i = 0; i < accounts.length; i++) {
       if (accounts[i].Identifier == phoneOrEmail && accounts[i].credential === password) {
+        this.setLoginLog(accounts[i].userId,accounts[i].Identifier);
         return new AjaxResult(true, null);
       }
     }
@@ -26,6 +27,22 @@ export class PassportService {
       message: '账户不存在或者密码错误',
       details: ''
     });
+  }
+
+  /**
+   * 登录日志
+   * @param userId 
+   */
+  public setLoginLog(userId:any,username:string){
+    let loginLogs = this.localStorageService.get("loginLogs", []);
+    const loginLog:LoginLog = {
+      userId:userId,
+      username:username,
+      loginTime: new Date().getTime(),
+      expirTime:new Date().getTime()+1000*60*60*24*5
+    };
+    loginLogs.push(loginLog);
+    this.localStorageService.set("loginLogs", loginLogs);
   }
 
   /**
@@ -46,8 +63,9 @@ export class PassportService {
     };
       //添加用户
     let users: User[];
+    let userId = Date.now();
     const user = {
-      id: Date.now(),
+      id: userId,
       phone: sign.phone,
       email: sign.email,
       password: sign.password,
@@ -58,17 +76,22 @@ export class PassportService {
     this.localStorageService.set("TUser", users);
     //添加账户
     let accounts: LoginAccount[];
+    let id = accounts==undefined || accounts.length<=0?0:accounts.length;
+    id++;
     accounts = this.localStorageService.get("TLoginAccount", []);
     //添加手机号的账户
     const account = {
-      userId: Date.now(),
+      id:id,
+      userId: userId,
       Identifier: sign.phone,
       credential: sign.password,
     }
     accounts.push(account);
     //添加邮箱的账户
+    id++;
     const account1 = {
-      userId: Date.now(),
+      id:id,
+      userId: userId,
       Identifier: sign.email,
       credential: sign.password,
     }
@@ -131,8 +154,16 @@ export class PassportService {
   async updatePassword(username:string,password:string){
     let accounts = this.localStorageService.get("TLoginAccount", []);
     for (let i = 0; i < accounts.length; i++) {
+      //根据手机号或者邮箱找到账户
       if (accounts[i].Identifier == username) {
-        accounts[i].credential = password;
+        let id = accounts[i].userId;
+        //同一个用户以手机号和以邮箱为账户名的两个账户的id一致
+        //再根据账户的id，修改另一个以邮箱或手机号为账户名的账户的密码
+        for (let j = 0; j < accounts.length; j++) {
+            if(accounts[j].userId===id){
+              accounts[j].credential = password;
+            }
+        }
         this.localStorageService.set("TLoginAccount", accounts);
         return new AjaxResult(true, null);
       }
@@ -160,5 +191,12 @@ export interface LoginAccount {
   userId: number;
   Identifier: string;
   credential: string;
+}
+
+export interface LoginLog {
+  userId: string,
+  username:string,
+  loginTime:number,
+  expirTime:number
 }
 
