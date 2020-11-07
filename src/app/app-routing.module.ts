@@ -20,6 +20,10 @@ const routes: Routes = [
   {
     path: 'passport',
     loadChildren: () => import('./pages/passport/passport.module').then( m => m.PassportPageModule)
+  },
+  {
+    path: 'home',
+    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
   }
 ];
 

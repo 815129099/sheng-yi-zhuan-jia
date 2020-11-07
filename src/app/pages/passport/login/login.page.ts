@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, MenuController, ToastController } from '@ionic/angular';
+import { BasePage } from '../basepage';
 import { PassportService } from '../passport.service';
 
 @Component({
@@ -8,9 +9,11 @@ import { PassportService } from '../passport.service';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class LoginPage extends BasePage implements OnInit {
 
-  constructor(private toastController: ToastController,private passportService:PassportService,private alertController:AlertController) { }
+  constructor(private toastController: ToastController,private passportService:PassportService,private alertController:AlertController,public menuController:MenuController) {
+    super(menuController);
+   }
 
   ngOnInit() {
   }

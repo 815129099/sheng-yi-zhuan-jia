@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      首页
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon slot="icon-only" name="calendar"></ion-icon>
+      </ion-button>
+      <ion-button>
+        <ion-icon slot="icon-only" name="notifications"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <img src="./assets/img/androidbanner.png" alt="图片飞走了">
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let s of sales">
+        <h6>{{s.title}}</h6>
+        <h4><span>{{564.678 | number:'1.2-2'}}元</span></h4>
+        <p>
+          {{s.content}}
+          <span [ngClass]="{'less-equal':s.current - s.previous <= 0,'greater':s.current - s.previous > 0}">
+            {{s.current - s.previous}}
+          </span>&nbsp;
+          <ng-container [ngSwitch]="minus(s.current, s.previous)">
+            <ion-icon name="arrow-up" color="danger" *ngSwitchCase="1"></ion-icon>
+            <ion-icon name="arrow-forward" color="success" *ngSwitchCase="0"></ion-icon>
+            <ion-icon name="arrow-down" color="success" *ngSwitchCase="-1"></ion-icon>
+          </ng-container>
+        </p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row class="grid">
+      <ion-col size="3" *ngFor="let item of list">
+        <div class="grid-item">
+          <!--<ion-icon size="large" name="{{item.icon}}"></ion-icon>-->
+          <img src="{{item.image}}" alt="图片飞走了" style="transform:scale(0.6) ">
+          <div>{{item.text}}</div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AlertController, IonSlides, ToastController } from '@ionic/angular';
+import { AlertController, IonSlides, MenuController, ToastController } from '@ionic/angular';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { AuthenticationCodeService } from '../authentication-code.service';
+import { BasePage } from '../basepage';
 import { PassportService } from '../passport.service';
 import { Account } from './account';
 @Component({
@@ -10,7 +11,7 @@ import { Account } from './account';
   templateUrl: './forgot-password.page.html',
   styleUrls: ['./forgot-password.page.scss'],
 })
-export class ForgotPasswordPage implements OnInit {
+export class ForgotPasswordPage extends BasePage implements OnInit {
   @ViewChild('accountSlides', { static: true }) accountSlides: IonSlides;
   accounts: Account = {
     account: '',
@@ -24,7 +25,9 @@ export class ForgotPasswordPage implements OnInit {
     countDown = false;
   //显示验证码错误
   slideIndex = 0;
-  constructor(private authenticationCodeService: AuthenticationCodeService, private localStorageService: LocalStorageService, private toastController: ToastController,private passportService:PassportService,private alertController:AlertController) { }
+  constructor(private authenticationCodeService: AuthenticationCodeService, private localStorageService: LocalStorageService, private toastController: ToastController,private passportService:PassportService,private alertController:AlertController,public menuController:MenuController) {
+    super(menuController);
+   }
 
   ngOnInit() {
     this.accountSlides.lockSwipeToNext(false);

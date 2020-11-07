@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { IonSlides } from '@ionic/angular';
+import { IonSlides, MenuController } from '@ionic/angular';
 import { AjaxResult } from 'src/app/shared/classes/ajax-result';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { AuthenticationCodeService } from '../authentication-code.service';
+import { BasePage } from '../basepage';
 import { PassportService } from '../passport.service';
 import { Signup } from './signup';
 
@@ -14,7 +15,7 @@ import { Signup } from './signup';
 })
 
 
-export class SignupPage implements OnInit {
+export class SignupPage extends BasePage implements OnInit {
   @ViewChild('signupSlides', { static: true }) signupSlides: IonSlides;
   signup: Signup = {
     phone: '',
@@ -31,7 +32,9 @@ export class SignupPage implements OnInit {
 
   //显示验证码错误
   slideIndex = 0;
-  constructor(private authenticationCodeService: AuthenticationCodeService, private localStorageService: LocalStorageService, private passportService: PassportService) { }
+  constructor(private authenticationCodeService: AuthenticationCodeService, private localStorageService: LocalStorageService, private passportService: PassportService,public menuController:MenuController) {
+    super(menuController)
+  }
 
   ngOnInit() {
     this.signupSlides.lockSwipeToNext(false);

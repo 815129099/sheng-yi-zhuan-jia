@@ -30,7 +30,7 @@ export class StartAppGuard implements CanActivate {
           log.expirTime = new Date().getTime()+1000*60*60*24*5;
           loginLogs.push(log);
           this.localStorageService.set("loginLogs", loginLogs);
-          this.router.navigateByUrl('folder/Inbox');
+          this.router.navigateByUrl('home');
           return false;
         }
         //过期
