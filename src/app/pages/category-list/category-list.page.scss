@@ -1,0 +1,15 @@
+ion-grid {
+    height: 100%;
+    align-items: stretch;
+    ion-row {
+      flex: 1 0 100%;
+      height: 100%;
+      ion-col[left] {
+        background-color: var(--ion-color-light);
+      }
+    }
+  }
+  
+  .item-active {
+    border-left: 4px solid var(--ion-color-primary);
+  }

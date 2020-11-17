@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { IonSlides, MenuController } from '@ionic/angular';
 import { AjaxResult } from 'src/app/shared/classes/ajax-result';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
@@ -32,7 +33,7 @@ export class SignupPage extends BasePage implements OnInit {
 
   //显示验证码错误
   slideIndex = 0;
-  constructor(private authenticationCodeService: AuthenticationCodeService, private localStorageService: LocalStorageService, private passportService: PassportService,public menuController:MenuController) {
+  constructor(private authenticationCodeService: AuthenticationCodeService, private localStorageService: LocalStorageService, private passportService: PassportService,public menuController:MenuController,private router:Router) {
     super(menuController)
   }
 
@@ -136,5 +137,17 @@ export class SignupPage extends BasePage implements OnInit {
       alert(ajaxResult.error.message);
     }
   }
+
+  async onLogin(){
+    this.passportService.login(this.signup.phone, this.signup.password).then((result) => {
+      if (result.success) {
+        this.router.navigateByUrl('home');
+        // 验证成功，自行完成页面跳转
+      } else {
+        this.router.navigateByUrl('passport/home');
+      }
+    });
+  }
+
 }
 

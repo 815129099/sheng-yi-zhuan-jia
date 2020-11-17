@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { User } from 'src/app/pages/passport/passport.service';
 
 
 @Injectable({
@@ -36,5 +37,10 @@ export class LocalStorageService {
       return;
     }
     this.storage.removeItem(key);
+  }
+
+  
+  getUser(): User {
+    return this.get("User", null);
   }
 }

@@ -15,14 +15,14 @@ export class WelcomePage implements OnInit {
   ngOnInit() {
      // 第一次调用get方法时，'App'这个key不存在，第二个参数会作为默认值返回
   let appConfig: any = this.localStorageService.get('APP_KEY', {
-    isLaunched: false,
+    Launched: false,
     version: '1.0.0'
   });
-  if ( appConfig.isLaunched === false ) {
-    appConfig.isLaunched = true;
+  if ( appConfig.Launched === false ) {
+    appConfig.Launched = true;
     this.localStorageService.set('APP_KEY', appConfig);
   } else {
-    this.router.navigateByUrl('folder/:id');
+    this.router.navigateByUrl('home');
   }
   }
   onSlideWillChange(event) {

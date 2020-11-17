@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AlertController, MenuController, ToastController } from '@ionic/angular';
 import { BasePage } from '../basepage';
 import { PassportService } from '../passport.service';
@@ -11,7 +12,7 @@ import { PassportService } from '../passport.service';
 })
 export class LoginPage extends BasePage implements OnInit {
 
-  constructor(private toastController: ToastController,private passportService:PassportService,private alertController:AlertController,public menuController:MenuController) {
+  constructor(private toastController: ToastController,private passportService:PassportService,private alertController:AlertController,public menuController:MenuController,private router:Router) {
     super(menuController);
    }
 
@@ -44,7 +45,7 @@ export class LoginPage extends BasePage implements OnInit {
     }
     this.passportService.login(this.username, this.password).then((result) => {
       if (result.success) {
-        alert("登陆成功");
+        this.router.navigateByUrl('home');
         // 验证成功，自行完成页面跳转
       } else {
         this.alertController.create({

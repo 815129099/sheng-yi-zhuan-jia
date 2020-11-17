@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button href='setting/shop'>
+      <ion-icon name="arrow-back"></ion-icon>返回
+    </ion-button>
+    <ion-title>{{title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <form>
+    <ion-list>
+      <ion-item>
+        <ion-input name="{{property}}" type="text" [(ngModel)]="value" required placeholder="{{title}}"></ion-input>
+      </ion-item>
+    </ion-list>
+    <div padding-horizontal>
+      <ion-button expand="block" color="primary" (click)="onSave()">保存</ion-button>
+    </div>
+  </form>
+</ion-content>

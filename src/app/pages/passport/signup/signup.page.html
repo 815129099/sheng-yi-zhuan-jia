@@ -108,7 +108,7 @@
     <ion-slide>
       <h1>注册成功！</h1>
         <div class="ion-padding-horizontal">
-          <ion-button type="submit" expand="full" color="primary" [disabled]="userForm.invalid" href="folder/:首页">登录</ion-button>
+          <ion-button type="submit" expand="full" color="primary" [disabled]="userForm.invalid" (click)="onLogin()">登录</ion-button>
         </div>
     </ion-slide>
   </ion-slides>
