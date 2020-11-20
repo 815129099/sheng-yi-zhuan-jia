@@ -1,11 +1,11 @@
 <ion-header>
   <ion-toolbar color="primary">
       <ion-buttons slot="start">
-          <ion-back-button text="返回"></ion-back-button>
+          <ion-back-button href="/home" text="返回"></ion-back-button>
       </ion-buttons>
       <ion-title>商品分类</ion-title>
       <ion-buttons slot="end">
-          <ion-button color="light" routerLink="/category-add" [queryParams]="{categoryName: '大分类'}">
+          <ion-button color="light" routerLink="/product/category/add" [queryParams]="{categoryName: '大分类',id:0}">
               <ion-icon name="add" style="font-size: 50px;"></ion-icon>
           </ion-button>
       </ion-buttons>
@@ -36,7 +36,7 @@
                   <ion-item *ngFor="let c of subCategories" (click)="onSelectSubCategory(c)">
                       <ion-label>{{c.name}}</ion-label>
                   </ion-item>
-                  <ion-item routerLink="/category-add" [queryParams]="{categoryName: activeCategory?.name}">
+                  <ion-item routerLink="/product/category/add" [queryParams]="{categoryName: activeCategory?.name,id:1}">
                       <ion-text color="primary">
                           <ion-icon name="add-circle"></ion-icon>新增小分类
                       </ion-text>

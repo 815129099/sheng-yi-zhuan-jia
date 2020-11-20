@@ -13,10 +13,7 @@ export class HomePage implements OnInit {
 
   //列表数据
   list = [];
-  images = ["add_salse.png","add_user.png","sales_account.png","a_note.png",
-           "sales_management.png","user_management.png","shop_management.png","analysis.png",
-           "gongying_more.png","guandan_more.png","image_addsales.png"];
-  texts = ["新增商品", "新增会员", "收银记账", "支用管理", "商品管理", "会员管理", "查询销售", "智能分析", "供应商管理", "挂单", "高级功能"];
+
   constructor() {
     //初始化数据
     this.getSales();
@@ -45,14 +42,23 @@ export class HomePage implements OnInit {
    * 获取功能列表
    */
   public getList() {
-    let length = this.texts.length;
-    for(let i=0;i<length;i++){
-      const list = {
-        text:this.texts[i],
-        image:"./assets/img/"+this.images[i]
-      }
-      this.list.push(list);
-    }
+    this.list =
+      [
+        { text: '新增商品', image: 'add_salse', url: '/product/category/list', disable: false },
+        { text: '新增会员', image: 'add_user', url: '/home', disable: false },
+        { text: '收账记录', image: 'sales_account', url: '/home', disable: false },
+        { text: '支出管理', image: 'a_note', url: '/home', disable: false },
+
+        { text: '商品管理', image: 'sales_management', url: '/product/categoryList', disable: false },
+        { text: '会员管理', image: 'user_management', url: '/home', disable: false },
+        { text: '查询销售', image: 'shop_management', url: '/home', disable: false },
+        { text: '智能分析', image: 'analysis', url: '/home', disable: false },
+
+        { text: '供应商管理', image: 'gongying_more', url: '/home', disable: false },
+        { text: '挂单', image: 'guandan_more', url: '/home', disable: false },
+        { text: '高级功能', image: 'image_addsales', url: '/home', disable: false },
+      ];
+
   }
 
   /**

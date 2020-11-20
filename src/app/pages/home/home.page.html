@@ -42,9 +42,9 @@
   <ion-grid>
     <ion-row class="grid">
       <ion-col size="3" *ngFor="let item of list">
-        <div class="grid-item">
-          <!--<ion-icon size="large" name="{{item.icon}}"></ion-icon>-->
-          <img src="{{item.image}}" alt="图片飞走了" style="transform:scale(0.6) ">
+        <div class="grid-item" *ngIf="!item.disable" routerLink={{item.url}}>
+          <ion-icon size="large" name="{{item.icon}}"></ion-icon>
+          <img src="./assets/img/{{item.image}}.png" alt="图片飞走了" style="transform:scale(0.6) ">
           <div>{{item.text}}</div>
         </div>
       </ion-col>

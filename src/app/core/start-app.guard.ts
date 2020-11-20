@@ -21,20 +21,19 @@ export class StartAppGuard implements CanActivate {
       this.localStorageService.set(APP_KEY, appConfig);
       return true;
     } else {
+      console.log("执行守卫");
       let user = this.localStorageService.get("User", null);
       //当前有用户登录
       if (user != null) {
-        let loginLogs = this.localStorageService.get("LoginLogs", []);
         let currentTime = new Date().getTime();
-        for (let i = 0; i < loginLogs.length; i++) {
-          //当前用户登陆过，且未过期
-          if (user.userId == loginLogs[i].userId && currentTime < loginLogs[i].expirTime) {
-            //重置过期时间
-            loginLogs[i].expirTime = new Date().getTime() + 1000 * 60 * 60 * 24 * 5;
-            this.localStorageService.set("LoginLogs", loginLogs);
+        //当前用户登陆过，且未过期
+        let date = Date.parse(user.createTime);
+        if(date+ 1000 * 60 * 60 * 24 * 5>currentTime){
+          //重置登录时间
+            user.createTime = new Date();
+            this.localStorageService.set("User", user);
             this.router.navigateByUrl('home');
             return false;
-          }
         }
       }
 
