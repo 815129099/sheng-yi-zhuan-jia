@@ -4,13 +4,14 @@ import { LocalStorageService } from 'src/app/shared/services/local-storage.servi
 import { Category } from './category';
 import { CategoryPage } from './category.page';
 import { CATEGORIES } from './mock.categories';
-
+import { ActiveCategory } from './active-category';
+import { Observable, Subject } from 'rxjs';
 export const CATEGORY_KEY = 'Category';
 @Injectable({
     providedIn: 'root'
 })
 export class CategoryService {
-
+    categorySubject = new Subject<ActiveCategory>();
     constructor(private localStorageService: LocalStorageService) { }
 
     async getAll(): Promise<AjaxResult> {
@@ -185,6 +186,13 @@ export class CategoryService {
         });
     }
 
+    setActiveCategory(activeCategory:ActiveCategory ) {
+        this.categorySubject.next(activeCategory);
+    }
+
+    watchCategory(): Observable<ActiveCategory> {
+        return this.categorySubject.asObservable();
+    }
 
 
 }

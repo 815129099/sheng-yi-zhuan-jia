@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActionSheetController } from '@ionic/angular';
 import { Category } from '../category';
 import { CategoryService } from '../category.service';
+import { Location } from '@angular/common';
 
 @Component({
     selector: 'app-category-list',
@@ -21,15 +22,22 @@ export class CategoryListPage implements OnInit {
         private categoryService: CategoryService,
         private actionSheetCtrl: ActionSheetController,
         private router: Router,
+        private location:Location,
+        private activatedRoute:ActivatedRoute
     ) {
+        this.activatedRoute.queryParams.subscribe(queryParams => {
+            this.tab = queryParams.tab;
+        });
+
         // 一定要异步 不然初始化没数据
+        /*
         categoryService.getAll().then((data) => {
             this.categories = data.data;
             if (this.categories) {
                 this.activeCategory = this.categories[0];
                 this.subCategories = this.activeCategory.children;
             }
-        });
+        });*/
 
     }
 
@@ -91,16 +99,19 @@ export class CategoryListPage implements OnInit {
 
     onSelectSubCategory(category: Category) {
         if (this.tab === 'FromProductAdd') {
-            // this.events.publish('category:selected', category, Date.now());
-            // console.log('category:selected');
-            // this.location.back();
+            this.categoryService.setActiveCategory(category);
+            this.location.back();
         }
     }
+
 
     gotoAddCategory() {
     }
 
     ngOnInit() {
     }
+
+    
+       
 
 }
