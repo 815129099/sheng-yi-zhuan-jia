@@ -6,7 +6,7 @@ import { SettingService } from '../../setting.service';
 import { ToastController } from '@ionic/angular';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { ShopPage } from '../shop.page';
-
+import { StatusBar } from '@ionic-native/status-bar/ngx';
 @Component({
   selector: 'app-shop-edit',
   templateUrl: './shop-edit.page.html',
@@ -23,8 +23,11 @@ export class ShopEditPage implements OnInit {
     private router: Router,
     private shopService: ShopService,
     private toastCtrl: ToastController,
-    private localStorageService :LocalStorageService
+    private localStorageService :LocalStorageService,
+    private statusBar:StatusBar
   ) {
+     // 沉浸式并且悬浮透明
+     this.statusBar.overlaysWebView(true);
     activatedRoute.queryParams.subscribe(queryParams => {
       this.property = queryParams.property;
       this.title = queryParams.title;
