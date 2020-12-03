@@ -1,0 +1,81 @@
+<ion-header class="ion-no-padding">
+  <ion-list class="ion-no-margin  ion-no-padding">
+    <ion-item class="ion-no-padding">
+      <ion-toolbar color="primary" class="ion-no-padding">
+
+        <ion-button color="" href='/home' slot="start">
+          <ion-icon name="arrow-back"></ion-icon>返回
+        </ion-button>
+        <ion-title>商品列表</ion-title>
+        <ion-button (click)="onReset()" slot="end">
+          <ion-icon name="refresh"></ion-icon>
+        </ion-button>
+        <ion-button (click)="selectCategory()" slot="end">分类</ion-button>
+      </ion-toolbar>
+    </ion-item>
+
+    <ion-item class="ion-no-padding" lines="none">
+      <ion-toolbar color="light">
+        <ion-searchbar placeholder="请输入商品名称、条形码" [(ngModel)]="queryTerm" (ionBlur)="onInput($event)"
+          showCancelButton="never" slot="start">
+        </ion-searchbar>
+
+        <ion-buttons slot="end">
+          <ion-button fill="outline" color="primary" size="small" expand="block">商品盘点</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-item>
+
+    <ion-item class="ion-no-padding" lines="none">
+      <ion-toolbar class="ion-no-padding">
+        <label>总共库存{{totalRepertory}}件，总成本{{totalNum}}元 
+          <ion-button  routerLink="/product/product/add" style="float: right;">
+            <ion-icon name="add" style="font-size: 24px;"></ion-icon>
+        </ion-button>
+          
+        </label>
+        
+      </ion-toolbar>
+    </ion-item>
+  </ion-list>
+</ion-header>
+
+<ion-content class="ion-no-padding" *ngIf="products.length == 0">
+  <img src="assets/img/commodity_no.png" />
+</ion-content>
+
+<ion-content class="ion-no-padding" *ngIf="products.length != 0">
+
+  <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-down-circle" pullingText="下拉可以刷新" refreshingSpinner="circles"
+      refreshingText="正在加载...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list>
+
+    <ion-item *ngFor="let product of products" color="light" detail>
+      <ion-thumbnail slot="start">
+        <img src="assets/img/c_goodspicture.png" *ngIf="product.images.length == 0" />
+        <img [src]="product.images[0]" *ngIf="product.images.length > 0" />
+      </ion-thumbnail>
+
+      <ion-label>
+        <ion-text>
+          <h4>{{product.name}}</h4>
+        </ion-text>
+        <ion-text>
+          <p>{{product.price}}￥</p>
+        </ion-text>
+        <ion-text>
+          <p>条码：{{product.barcode}} 库存：{{product.repertory}}</p>
+        </ion-text>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-infinite-scroll threshold="100px" position="bottom" (ionInfinite)="onInfinite($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="加载更多商品数据...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

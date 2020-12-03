@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AddProductPage } from './add-product/add-product.page';
 import { CategoryAddPage } from './category/category-add/category-add.page';
 import { CategoryEditPage } from './category/category-edit/category-edit.page';
 import { CategoryListPage } from './category/category-list/category-list.page';
+import { CategoryPage } from './category/category.page';
+import { ProductListPage } from './product-list/product-list.page';
 
 import { ProductPage } from './product.page';
 
@@ -13,7 +16,7 @@ const routes: Routes = [
   },
   {
     path: 'category',
-    loadChildren: () => import('./category/category.module').then( m => m.CategoryPageModule)
+    component:CategoryPage
   },
   {
     path: 'category/list',
@@ -28,8 +31,12 @@ const routes: Routes = [
     component: CategoryEditPage
   },
   {
-    path: 'add-product',
-    loadChildren: () => import('./add-product/add-product.module').then( m => m.AddProductPageModule)
+    path: 'product/add',
+    component:AddProductPage
+  },
+  {
+    path: 'product/list',
+    component:ProductListPage
   },
 ];
 

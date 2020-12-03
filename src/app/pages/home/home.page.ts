@@ -44,15 +44,15 @@ export class HomePage implements OnInit {
   public getList() {
     this.list =
       [
-        { text: '新增商品', image: 'add_salse', url: '/product/add-product', disable: false },
+        { text: '新增商品', image: 'add_salse', url: '/product/product/add', disable: false },
         { text: '新增会员', image: 'add_user', url: '/home', disable: false },
         { text: '收账记录', image: 'sales_account', url: '/home', disable: false },
         { text: '支出管理', image: 'a_note', url: '/home', disable: false },
 
-        { text: '商品管理', image: 'sales_management', url: '/product/category/list', disable: false },
+        { text: '商品管理', image: 'sales_management', url: '/product/product/list', disable: false },
         { text: '会员管理', image: 'user_management', url: '/home', disable: false },
         { text: '查询销售', image: 'shop_management', url: '/home', disable: false },
-        { text: '智能分析', image: 'analysis', url: '/home', disable: false },
+        { text: '商品分类', image: 'analysis', url: '/product/category/list', disable: false },
 
         { text: '供应商管理', image: 'gongying_more', url: '/home', disable: false },
         { text: '挂单', image: 'guandan_more', url: '/home', disable: false },

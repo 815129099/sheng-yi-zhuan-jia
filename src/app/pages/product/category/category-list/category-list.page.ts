@@ -4,6 +4,7 @@ import { ActionSheetController } from '@ionic/angular';
 import { Category } from '../category';
 import { CategoryService } from '../category.service';
 import { Location } from '@angular/common';
+import { ProductService } from '../../product.service';
 
 @Component({
     selector: 'app-category-list',
@@ -23,7 +24,8 @@ export class CategoryListPage implements OnInit {
         private actionSheetCtrl: ActionSheetController,
         private router: Router,
         private location:Location,
-        private activatedRoute:ActivatedRoute
+        private activatedRoute:ActivatedRoute,
+        private productService:ProductService
     ) {
         this.activatedRoute.queryParams.subscribe(queryParams => {
             this.tab = queryParams.tab;
@@ -102,10 +104,10 @@ export class CategoryListPage implements OnInit {
             this.categoryService.setActiveCategory(category);
             this.location.back();
         }
-    }
-
-
-    gotoAddCategory() {
+        if (this.tab === 'selectCategory') {
+            this.productService.setActiveCategory(category);
+            this.location.back();
+        }
     }
 
     ngOnInit() {
