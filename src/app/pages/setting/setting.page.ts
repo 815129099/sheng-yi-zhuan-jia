@@ -17,6 +17,7 @@ export class SettingPage implements OnInit {
   public loginout(){
     let logs = []
     this.localStorageService.set("loginLogs",logs);
+    this.localStorageService.set("User",null);
     this.router.navigateByUrl('passport/login');
   }
 

@@ -28,16 +28,23 @@ export class StartAppGuard implements CanActivate {
         let currentTime = new Date().getTime();
         //当前用户登陆过，且未过期
         let date = Date.parse(user.createTime);
-        if(date+ 1000 * 60 * 60 * 24 * 5>currentTime){
-          //重置登录时间
+        console.log("登录时间"+this.localStorageService.parseDate(new Date(date),"YYYY-mm-dd HH:MM:SS"));
+        console.log("当前时间"+this.localStorageService.parseDate(new Date(),"YYYY-mm-dd HH:MM:SS"));
+        if(date+ 1000*60*5>currentTime){
+          //没有过期重置登录时间
+          console.log("没有过期重置登录时间");
             user.createTime = new Date();
             this.localStorageService.set("User", user);
             this.router.navigateByUrl('home');
             return false;
+        }else{
+          //登录过期，user置空
+          console.log("登录过期，user置空");
+          this.localStorageService.set("User", null);
         }
       }
 
-      //当前没有用户登录 或者日志已删除
+      //当前没有用户登录
       this.router.navigateByUrl('passport/login');
       return false;
     }

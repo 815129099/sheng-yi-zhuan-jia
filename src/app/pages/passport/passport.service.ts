@@ -18,6 +18,7 @@ export class PassportService {
     * @param password 
     */
   async login(phoneOrEmail: string, password: string): Promise<AjaxResult> {
+    console.log(this.localStorageService.parseDate(new Date(),"YYYY-mm-dd HH:MM:SS"));
     let accounts = this.localStorageService.get("TLoginAccount", []);
     for (let i = 0; i < accounts.length; i++) {
       if (accounts[i].Identifier == phoneOrEmail && accounts[i].credential === password) {
@@ -57,6 +58,7 @@ export class PassportService {
     for (let i = 0; i < users.length; i++) {
       if (users[i].id == userId) {
         let user = users[i];
+        user.createTime = new Date();
         this.localStorageService.set("User", user);
       }
     }
@@ -199,7 +201,6 @@ export class PassportService {
     accounts.push(account);
     this.localStorageService.set("TLoginAccount", accounts);
   }
-
 }
 
 

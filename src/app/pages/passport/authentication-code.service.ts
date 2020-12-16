@@ -12,7 +12,7 @@ export class AuthenticationCodeService {
     this.code = '';
   }
   // 生成指定长度的随机数字
-  createCode(count:number = 4, timeout: number = 10): string{
+  createCode(count:number = 4, timeout: number = 1): string{
     this.code = '';
     // 10分钟内有效
     this.deadline = Date.now() + 60 * timeout * 1000;
@@ -25,7 +25,6 @@ export class AuthenticationCodeService {
        //字符串拼接 将每次随机的字符 进行拼接
       this.code+= random[index];
     }
-    console.log(this.code);
     return this.code;
   }
   // 验证用户输入的短信验证码是否一致，是否过期

@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonSlides, MenuController } from '@ionic/angular';
 import { AjaxResult } from 'src/app/shared/classes/ajax-result';
+import { AlertController, ToastController } from '@ionic/angular';
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 import { AuthenticationCodeService } from '../authentication-code.service';
 import { BasePage } from '../basepage';
@@ -33,18 +34,22 @@ export class SignupPage extends BasePage implements OnInit {
 
   //显示验证码错误
   slideIndex = 0;
-  constructor(private authenticationCodeService: AuthenticationCodeService, private localStorageService: LocalStorageService, private passportService: PassportService,public menuController:MenuController,private router:Router) {
+  constructor(private authenticationCodeService: AuthenticationCodeService,private toastController: ToastController, private localStorageService: LocalStorageService, private passportService: PassportService,public menuController:MenuController,private router:Router) {
     super(menuController)
   }
 
   ngOnInit() {
-    this.signupSlides.lockSwipeToNext(false);
+    this.signupSlides.lockSwipeToNext(true);
   }
   onNext() {
+    this.signupSlides.lockSwipeToNext(false);
     this.signupSlides.slideNext();
+    this.signupSlides.lockSwipeToNext(true);
   }
   onPrevious() {
-    this.signupSlides.slidePrev()
+    this.signupSlides.lockSwipeToNext(false);
+    this.signupSlides.slidePrev();
+    this.signupSlides.lockSwipeToNext(true);
   }
 
 
@@ -58,11 +63,15 @@ export class SignupPage extends BasePage implements OnInit {
    * 
    * @param form 表单
    */
-  onSubmitPhone(form: NgForm) {
+  async onSubmitPhone(form: NgForm) {
+    let toast = await this.toastController.create({
+      duration: 3000
+    });
     if (form.valid) {
       // 已通过客户端验证
       this.onNext();
-      console.log("手机号验证成功");
+      toast.message = "手机号验证成功";
+      toast.present();
     }
   }
 
@@ -70,15 +79,20 @@ export class SignupPage extends BasePage implements OnInit {
    * 
    * @param form 表单
    */
-  onSubmitCode(form: NgForm) {
+  async onSubmitCode(form: NgForm) {
+    let toast = await this.toastController.create({
+      duration: 3000
+    });
     //验证码验证
     let result = this.onValidateCode(this.signup.code);
     console.log(result);
     if (result == true) {
       this.onNext();
-      console.log("验证码验证成功");
+      toast.message = "验证码验证成功";
+      toast.present();
     } else {
-      alert("验证码不一致!");
+      toast.message = "验证码不一致或者已过期";
+      toast.present();
     }
   }
 
@@ -86,15 +100,19 @@ export class SignupPage extends BasePage implements OnInit {
    * 
    * @param form 表单
    */
-  onSubmitUser(form: NgForm) {
+  async onSubmitUser(form: NgForm) {
+    let toast = await this.toastController.create({
+      duration: 3000
+    });
     if (this.signup.password !== this.signup.confirmPassword) {
-      alert("密码不一致！")
+      toast.message = "密码不一致！";
+      toast.present();
     } else {
       this.onRegister();
     }
   }
 
-  onSendSMS() {
+  async onSendSMS() {
     let codeTime = this.localStorageService.get(this.signup.phone, 0);
     if (codeTime == 3) {
       this.showButtonText = '已获取三次';
@@ -105,8 +123,8 @@ export class SignupPage extends BasePage implements OnInit {
       this.localStorageService.set(this.signup.phone, codeTime);
     }
 
-
-    this.authenticationCodeService.createCode();
+    let code = this.authenticationCodeService.createCode();
+    this.signup.code = code;
     this.countDown = true;                // 发送验证码后一分钟内，按钮变成不可点击状态 
     this.showButtonText = '验证码已发送（' + 60 + 's）';           // 验证码发送后的初始状态 
     const start = setInterval(() => {
@@ -130,11 +148,17 @@ export class SignupPage extends BasePage implements OnInit {
   }
 
   async onRegister() {
+    let toast = await this.toastController.create({
+      duration: 3000
+    });
     let ajaxResult = await this.passportService.addUser(this.signup);
     if (ajaxResult.success) {
       this.onNext();
+      toast.message = "注册成功！";
+      toast.present();
     } else {
-      alert(ajaxResult.error.message);
+      toast.message = ajaxResult.error.message;
+      toast.present();
     }
   }
 
