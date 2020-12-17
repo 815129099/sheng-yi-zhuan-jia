@@ -32,6 +32,6 @@ export class WelcomePage implements OnInit {
   }
 
   onSkip(){
-    
+    this.router.navigateByUrl('passport/login');
   }
 }
