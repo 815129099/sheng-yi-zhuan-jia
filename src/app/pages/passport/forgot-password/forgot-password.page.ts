@@ -30,13 +30,17 @@ export class ForgotPasswordPage extends BasePage implements OnInit {
    }
 
   ngOnInit() {
-    this.accountSlides.lockSwipeToNext(false);
+    this.accountSlides.lockSwipeToNext(true);
   }
   onNext() {
+    this.accountSlides.lockSwipeToNext(false);
     this.accountSlides.slideNext();
+    this.accountSlides.lockSwipeToNext(true);
   }
   onPrevious() {
-    this.accountSlides.slidePrev()
+    this.accountSlides.lockSwipeToNext(false);
+    this.accountSlides.slidePrev();
+    this.accountSlides.lockSwipeToNext(true);
   }
 
   onSlideWillChange(event) {
@@ -69,7 +73,10 @@ export class ForgotPasswordPage extends BasePage implements OnInit {
    * 
    * @param form 表单
    */
-  onSubmitCode(form: NgForm) {
+  async onSubmitCode(form: NgForm) {
+    let toast = await this.toastController.create({
+      duration: 3000
+    });
     //验证码验证
     let result = this.onValidateCode(this.accounts.code);
     console.log(result);
@@ -77,7 +84,8 @@ export class ForgotPasswordPage extends BasePage implements OnInit {
       this.onNext();
       console.log("验证码验证成功");
     } else {
-      alert("验证码不一致!");
+      toast.message = "验证码不一致!";
+      toast.present();
     }
   }
 
@@ -103,7 +111,8 @@ export class ForgotPasswordPage extends BasePage implements OnInit {
       this.localStorageService.set(this.accounts.account, codeTime);
     }
 
-    this.authenticationCodeService.createCode();
+    let code = this.authenticationCodeService.createCode();
+    this.accounts.code = code;
     this.countDown = true;                // 发送验证码后一分钟内，按钮变成不可点击状态 
     this.showButtonText = '验证码已发送（' + 60 + 's）';           // 验证码发送后的初始状态 
     const start = setInterval(() => {
@@ -123,8 +132,12 @@ export class ForgotPasswordPage extends BasePage implements OnInit {
    * @param form 表单
    */
   async onSubmitUser(form: NgForm) {
+    let toast = await this.toastController.create({
+      duration: 3000
+    });
     if (this.accounts.password !== this.accounts.confirmPassword) {
-      alert("密码不一致！");
+      toast.message = "密码不一致！";
+      toast.present();
     } else {
       await this.passportService.updatePassword(this.accounts.account,this.accounts.password).then((result) => {
         if (result.success) {
