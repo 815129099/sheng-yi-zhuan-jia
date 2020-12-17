@@ -9,6 +9,7 @@ import { AuthenticationCodeService } from '../authentication-code.service';
 import { BasePage } from '../basepage';
 import { PassportService } from '../passport.service';
 import { Signup } from './signup';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-signup',
@@ -34,7 +35,7 @@ export class SignupPage extends BasePage implements OnInit {
 
   //显示验证码错误
   slideIndex = 0;
-  constructor(private authenticationCodeService: AuthenticationCodeService,private toastController: ToastController, private localStorageService: LocalStorageService, private passportService: PassportService,public menuController:MenuController,private router:Router) {
+  constructor(private authenticationCodeService: AuthenticationCodeService,private toastController: ToastController, private localStorageService: LocalStorageService, private passportService: PassportService,public menuController:MenuController,private router:Router,private appComponent:AppComponent) {
     super(menuController)
   }
 
@@ -166,9 +167,10 @@ export class SignupPage extends BasePage implements OnInit {
     this.passportService.login(this.signup.phone, this.signup.password).then((result) => {
       if (result.success) {
         this.router.navigateByUrl('home');
+        this.appComponent.showShop();
         // 验证成功，自行完成页面跳转
       } else {
-        this.router.navigateByUrl('passport/home');
+        this.router.navigateByUrl('passport/login');
       }
     });
   }

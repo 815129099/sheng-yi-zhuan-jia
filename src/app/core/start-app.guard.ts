@@ -14,7 +14,7 @@ export class StartAppGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const appConfig: any = this.localStorageService.get(APP_KEY, {
       Launched: false,
-      version: '1.0.0'
+      version: '010'
     });
     if (appConfig.Launched === false) {
       appConfig.Launched = true;

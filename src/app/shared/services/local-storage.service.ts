@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from 'src/app/pages/passport/passport.service';
+import { Shop } from 'src/app/pages/setting/shop/shop';
 
 
 @Injectable({

@@ -4,6 +4,7 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { LocalStorageService } from './shared/services/local-storage.service';
+import { ShopService } from './pages/setting/shop/shop.service';
 
 @Component({
   selector: 'app-root',
@@ -27,22 +28,28 @@ export class AppComponent implements OnInit {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private localStorageService:LocalStorageService
+    private localStorageService:LocalStorageService,
+    private shopService:ShopService
   ) {
     this.initializeApp();
+    this.showShop();
   }
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      //debugger;
     });
-    let user = this.localStorageService.get("User",null);
-    if(user!=null){
-      this.username = "刘文祥";
-      this.phone = user.phone;
-    }
   }
 
+  showShop() {
+    let user = this.localStorageService.get("User",null);
+    if(user!=null){
+      let currentShop = this.shopService.getShop(user.id);
+      this.username = currentShop.shopName;
+      this.phone = user.phone;
+    }
+}
   ngOnInit() {
     const path = window.location.pathname.split('folder/')[1];
     if (path !== undefined) {

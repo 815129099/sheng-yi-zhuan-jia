@@ -112,7 +112,7 @@ export class PassportService {
     //添加店铺
     let shop: Shop = {
       userId: userId,
-      shopName: '未填写',
+      shopName: sign.shopName,
       shopShortName: '未填写',
       userName: '未填写',
       shopTel: sign.phone,
